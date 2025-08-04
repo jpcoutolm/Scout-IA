@@ -14,6 +14,7 @@ import { showError, showSuccess } from "@/utils/toast";
 import { Header } from "@/components/Header";
 import { PlayerRadarChart } from "@/components/PlayerRadarChart";
 import { ReportCustomization } from "@/components/ReportCustomization";
+import { ChatbotWidget } from "@/components/ChatbotWidget";
 
 const Index = () => {
   const { session } = useAuth();
@@ -164,6 +165,7 @@ const Index = () => {
           <ImpactChart players={filteredPlayers} />
         </div>
       </main>
+      <ChatbotWidget players={filteredPlayers} />
     </div>
   );
 };
