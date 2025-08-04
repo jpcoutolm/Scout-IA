@@ -12,6 +12,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { showError, showSuccess } from "@/utils/toast";
 import { Header } from "@/components/Header";
+import { PlayerRadarChart } from "@/components/PlayerRadarChart";
 
 const Index = () => {
   const { session } = useAuth();
@@ -149,6 +150,7 @@ const Index = () => {
             </Card>
           )}
           <AISuggestions players={filteredPlayers} />
+          <PlayerRadarChart players={filteredPlayers} />
           <PlayerTable players={filteredPlayers} />
           <ImpactChart players={filteredPlayers} />
         </div>
