@@ -64,6 +64,7 @@ const Report = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Nome</TableHead>
+              <TableHead>Posição</TableHead>
               <TableHead>Gols</TableHead>
               <TableHead>Efic. Passe (%)</TableHead>
               <TableHead>Impacto Of.</TableHead>
@@ -75,6 +76,7 @@ const Report = () => {
             {players.map((p) => (
               <TableRow key={p.id}>
                 <TableCell>{p.name}</TableCell>
+                <TableCell>{p.position}</TableCell>
                 <TableCell>{p.goals}</TableCell>
                 <TableCell>{p.passingEfficiency}%</TableCell>
                 <TableCell>{p.offensiveImpact}</TableCell>

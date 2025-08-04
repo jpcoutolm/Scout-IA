@@ -7,6 +7,7 @@ export interface PlayerFormData {
   shotsOnTarget: number;
   fouls: number;
   minutesPlayed: number;
+  position: string;
 }
 
 // Data structure in the database

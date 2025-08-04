@@ -13,9 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlayerFormData } from "@/types/player";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
+  position: z.string().min(1, { message: "Selecione uma posição." }),
   goals: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
   accuratePasses: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
   missedPasses: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
@@ -33,6 +35,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      position: "",
       goals: 0,
       accuratePasses: 0,
       missedPasses: 0,
@@ -55,19 +58,46 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome do Jogador</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ex: Lionel Messi" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome do Jogador</FormLabel>
+                    <FormControl>
+                      <Input placeholder="ex: Lionel Messi" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="position"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Posição do Jogador</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione uma posição" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Goleiro">Goleiro</SelectItem>
+                        <SelectItem value="Zagueiro">Zagueiro</SelectItem>
+                        <SelectItem value="Lateral">Lateral</SelectItem>
+                        <SelectItem value="Volante">Volante</SelectItem>
+                        <SelectItem value="Meia">Meia</SelectItem>
+                        <SelectItem value="Atacante">Atacante</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}

@@ -54,6 +54,7 @@ export function PlayerTable({ players }: PlayerTableProps) {
 
   const headers: { key: SortKey; label: string }[] = [
     { key: 'name', label: 'Nome' },
+    { key: 'position', label: 'Posição' },
     { key: 'goals', label: 'Gols' },
     { key: 'accuratePasses', label: 'Passes Certos' },
     { key: 'missedPasses', label: 'Passes Errados' },
@@ -90,6 +91,7 @@ export function PlayerTable({ players }: PlayerTableProps) {
                 sortedPlayers.map((player) => (
                   <TableRow key={player.id}>
                     <TableCell className="font-medium">{player.name}</TableCell>
+                    <TableCell>{player.position}</TableCell>
                     <TableCell>{player.goals}</TableCell>
                     <TableCell>{player.accuratePasses}</TableCell>
                     <TableCell>{player.missedPasses}</TableCell>
