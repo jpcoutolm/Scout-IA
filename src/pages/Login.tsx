@@ -31,25 +31,33 @@ const Login = () => {
           localization={{
             variables: {
               sign_in: {
-                email_label: 'Endereço de e-mail',
+                email_label: 'E-mail',
                 password_label: 'Senha',
+                email_input_placeholder: 'Digite seu e-mail',
+                password_input_placeholder: 'Digite sua senha',
                 button_label: 'Entrar',
                 social_provider_text: 'Entrar com {{provider}}',
                 link_text: 'Já tem uma conta? Entre',
               },
               sign_up: {
-                email_label: 'Endereço de e-mail',
+                email_label: 'E-mail',
                 password_label: 'Senha',
+                email_input_placeholder: 'Digite seu e-mail',
+                password_input_placeholder: 'Digite sua senha',
                 button_label: 'Cadastrar',
                 social_provider_text: 'Cadastrar com {{provider}}',
                 link_text: 'Não tem uma conta? Cadastre-se',
               },
               forgotten_password: {
-                email_label: 'Endereço de e-mail',
+                email_label: 'E-mail',
+                email_input_placeholder: 'Digite seu e-mail',
                 button_label: 'Enviar instruções de recuperação',
                 link_text: 'Esqueceu sua senha?',
               },
             },
+            translations: {
+              'Invalid login credentials': 'Credenciais inválidas',
+            }
           }}
         />
       </div>
