@@ -1,6 +1,7 @@
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalculatedPlayerStats } from "@/types/player";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface PlayerRadarChartProps {
   players: CalculatedPlayerStats[];
@@ -9,13 +10,18 @@ interface PlayerRadarChartProps {
 const MAX_PLAYERS_TO_COMPARE = 3;
 
 export function PlayerRadarChart({ players }: PlayerRadarChartProps) {
-  // Select top players based on offensive impact
+  const { theme } = useTheme();
+
+  const mutedForeground = `hsl(var(--muted-foreground))`;
+  const cardBackground = `hsl(var(--card))`;
+  const primaryHsl = theme === 'dark' ? '210 40% 98%' : '222.2 47.4% 11.2%';
+
   const topPlayers = [...players]
     .sort((a, b) => b.offensiveImpact - a.offensiveImpact)
     .slice(0, MAX_PLAYERS_TO_COMPARE);
 
   if (topPlayers.length === 0) {
-    return null; // Don't render the card if there are no players
+    return null;
   }
 
   const stats = [
@@ -26,13 +32,11 @@ export function PlayerRadarChart({ players }: PlayerRadarChartProps) {
     { name: 'Min. Jogados', key: 'minutesPlayed' },
   ];
 
-  // Find the maximum value for each stat to set the scale
   const maxValues = stats.map(stat => {
     const allValues = players.map(p => p[stat.key as keyof CalculatedPlayerStats] as number);
-    return Math.max(...allValues, 1); // Use 1 as a minimum max value to avoid division by zero
+    return Math.max(...allValues, 1);
   });
 
-  // Format data for the radar chart
   const chartData = stats.map((stat, index) => {
     const dataPoint: { subject: string; fullMark: number; [key: string]: string | number } = {
       subject: stat.name,
@@ -53,19 +57,26 @@ export function PlayerRadarChart({ players }: PlayerRadarChartProps) {
         {topPlayers.length > 0 ? (
           <ResponsiveContainer width="100%" height={350}>
             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
-              <PolarRadiusAxis angle={30} domain={[0, 'dataMax']} />
-              <Tooltip />
-              <Legend />
+              <PolarGrid stroke={mutedForeground} strokeOpacity={0.3} />
+              <PolarAngleAxis dataKey="subject" tick={{ fill: mutedForeground, fontSize: 12 }} />
+              <PolarRadiusAxis angle={30} domain={[0, 'dataMax']} tick={{ fill: 'transparent' }} />
+              <Tooltip
+                cursor={{ stroke: mutedForeground, strokeOpacity: 0.5 }}
+                contentStyle={{
+                  backgroundColor: cardBackground,
+                  borderColor: mutedForeground,
+                  borderRadius: 'var(--radius)',
+                }}
+                labelStyle={{ color: `hsl(var(--foreground))` }}
+              />
+              <Legend wrapperStyle={{ fontSize: '12px', color: mutedForeground }} />
               {topPlayers.map((player, index) => (
                 <Radar
                   key={player.id}
                   name={player.name}
                   dataKey={player.name}
-                  stroke={`hsl(var(--primary), ${1 - index * 0.3})`}
-                  fill={`hsl(var(--primary), ${1 - index * 0.3})`}
-                  fillOpacity={0.6}
+                  stroke={`hsla(${primaryHsl}, ${1 - index * 0.2})`}
+                  fill={`hsla(${primaryHsl}, ${0.4 - index * 0.1})`}
                 />
               ))}
             </RadarChart>
