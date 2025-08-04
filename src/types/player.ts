@@ -13,6 +13,8 @@ export interface PlayerFormData {
   goalsConceded?: number;
   successfulExits?: number;
   criticalErrors?: number;
+  // Defensive specific
+  tackles?: number;
 }
 
 // Data structure in the database

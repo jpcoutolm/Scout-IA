@@ -37,6 +37,7 @@ const Report = () => {
 
   const outfieldPlayers = allPlayers.filter(p => p.position !== 'Goleiro');
   const goalkeepers = allPlayers.filter(p => p.position === 'Goleiro');
+  const defensivePositions = ['Zagueiro', 'Lateral', 'Volante'];
 
   if (allPlayers.length === 0) {
     return (
@@ -76,6 +77,7 @@ const Report = () => {
                   <TableHead>Gols</TableHead>
                   <TableHead>Efic. Passe (%)</TableHead>
                   <TableHead>Impacto Of.</TableHead>
+                  <TableHead>Desarmes</TableHead>
                   <TableHead>Min. Jogados</TableHead>
                   <TableHead>Faltas</TableHead>
                 </TableRow>
@@ -88,6 +90,7 @@ const Report = () => {
                     <TableCell>{p.goals}</TableCell>
                     <TableCell>{p.passingEfficiency}%</TableCell>
                     <TableCell>{p.offensiveImpact}</TableCell>
+                    <TableCell>{defensivePositions.includes(p.position) ? p.tackles ?? 0 : 'N/A'}</TableCell>
                     <TableCell>{p.minutesPlayed}</TableCell>
                     <TableCell>{p.fouls}</TableCell>
                   </TableRow>

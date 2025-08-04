@@ -29,6 +29,8 @@ const formSchema = z.object({
   goalsConceded: z.coerce.number().int().min(0).optional(),
   successfulExits: z.coerce.number().int().min(0).optional(),
   criticalErrors: z.coerce.number().int().min(0).optional(),
+  // Defensive field
+  tackles: z.coerce.number().int().min(0).optional(),
 });
 
 interface PlayerFormProps {
@@ -51,10 +53,12 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
       goalsConceded: 0,
       successfulExits: 0,
       criticalErrors: 0,
+      tackles: 0,
     },
   });
 
   const selectedPosition = form.watch("position");
+  const defensivePositions = ['Zagueiro', 'Lateral', 'Volante'];
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     addPlayer(values);
@@ -118,6 +122,9 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 <FormField control={form.control} name="missedPasses" render={({ field }) => (<FormItem><FormLabel>Passes Errados</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField control={form.control} name="fouls" render={({ field }) => (<FormItem><FormLabel>Faltas</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 <FormField control={form.control} name="minutesPlayed" render={({ field }) => (<FormItem><FormLabel>Minutos Jogados</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                {defensivePositions.includes(selectedPosition) && (
+                  <FormField control={form.control} name="tackles" render={({ field }) => (<FormItem><FormLabel>Desarmes</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                )}
               </div>
             )}
 

@@ -63,12 +63,15 @@ export function PlayerTable({ players }: PlayerTableProps) {
     { key: 'passingEfficiency', label: 'Efic. Passe (%)' },
     { key: 'shotsOnTarget', label: 'Chutes a Gol' },
     { key: 'fouls', label: 'Faltas' },
+    { key: 'tackles', label: 'Desarmes' },
     { key: 'minutesPlayed', label: 'Min. Jogados' },
     { key: 'offensiveImpact', label: 'Impacto Of.' },
     { key: 'saves', label: 'Defesas', isGk: true },
     { key: 'goalsConceded', label: 'Gols Sofridos', isGk: true },
     { key: 'criticalErrors', label: 'Erros Críticos', isGk: true },
   ];
+
+  const defensivePositions = ['Zagueiro', 'Lateral', 'Volante'];
 
   return (
     <Card>
@@ -102,6 +105,7 @@ export function PlayerTable({ players }: PlayerTableProps) {
                     <TableCell>{player.position !== 'Goleiro' ? `${player.passingEfficiency}%` : 'N/A'}</TableCell>
                     <TableCell>{player.position !== 'Goleiro' ? player.shotsOnTarget : 'N/A'}</TableCell>
                     <TableCell>{player.fouls}</TableCell>
+                    <TableCell>{defensivePositions.includes(player.position) ? player.tackles ?? 0 : 'N/A'}</TableCell>
                     <TableCell>{player.minutesPlayed}</TableCell>
                     <TableCell>{player.position !== 'Goleiro' ? player.offensiveImpact : 'N/A'}</TableCell>
                     <TableCell>{player.position === 'Goleiro' ? player.saves : 'N/A'}</TableCell>
