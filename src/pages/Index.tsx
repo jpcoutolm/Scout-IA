@@ -1,15 +1,20 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { PlayerForm } from "@/components/PlayerForm";
 import { PlayerTable } from "@/components/PlayerTable";
 import { ImpactChart } from "@/components/ImpactChart";
 import { Button } from "@/components/ui/button";
 import { Download, FileText } from "lucide-react";
-import { CalculatedPlayerStats, PlayerFormData } from "@/types/player";
+import { CalculatedPlayerStats, PlayerFormData, PlayerDB } from "@/types/player";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlayerFilters, Filters } from "@/components/PlayerFilters";
 import { AISuggestions } from "@/components/AISuggestions";
+import { useAuth } from "@/components/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
+import { showError, showSuccess } from "@/utils/toast";
+import { Header } from "@/components/Header";
 
 const Index = () => {
+  const { session } = useAuth();
   const [players, setPlayers] = useState<CalculatedPlayerStats[]>([]);
   const [filters, setFilters] = useState<Filters>({
     name: '',
@@ -23,20 +28,57 @@ const Index = () => {
     maxMinutesPlayed: '',
   });
 
-  const addPlayer = (data: PlayerFormData) => {
-    const totalPasses = data.accuratePasses + data.missedPasses;
-    const passingEfficiency = totalPasses > 0 ? (data.accuratePasses / totalPasses) * 100 : 0;
-    const offensiveImpact = 2 * data.goals + data.shotsOnTarget;
-
-    const newPlayer: CalculatedPlayerStats = {
-      ...data,
-      id: `${data.name}-${new Date().getTime()}`,
+  const calculateStats = (player: PlayerDB): CalculatedPlayerStats => {
+    const totalPasses = player.accuratePasses + player.missedPasses;
+    const passingEfficiency = totalPasses > 0 ? (player.accuratePasses / totalPasses) * 100 : 0;
+    const offensiveImpact = 2 * player.goals + player.shotsOnTarget;
+    return {
+      ...player,
       totalPasses,
       passingEfficiency: parseFloat(passingEfficiency.toFixed(1)),
       offensiveImpact,
     };
+  };
 
-    setPlayers((prev) => [...prev, newPlayer]);
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      if (session?.user) {
+        const { data, error } = await supabase
+          .from('players')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching players:', error);
+          showError('Falha ao carregar os dados dos jogadores.');
+        } else if (data) {
+          setPlayers(data.map(calculateStats));
+        }
+      }
+    };
+
+    fetchPlayers();
+  }, [session]);
+
+  const addPlayer = async (data: PlayerFormData) => {
+    if (!session?.user) {
+      showError("Você precisa estar logado para adicionar um jogador.");
+      return;
+    }
+
+    const { data: newPlayer, error } = await supabase
+      .from('players')
+      .insert({ ...data, user_id: session.user.id })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error adding player:', error);
+      showError('Falha ao adicionar jogador.');
+    } else if (newPlayer) {
+      setPlayers((prev) => [calculateStats(newPlayer), ...prev]);
+      showSuccess("Jogador adicionado com sucesso!");
+    }
   };
 
   const filteredPlayers = useMemo(() => {
@@ -80,10 +122,7 @@ const Index = () => {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <header className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold">Scout IA – Análise de Partidas de Futebol Amador</h1>
-        <p className="text-muted-foreground mt-2">Registre e analise o desempenho dos jogadores após cada partida.</p>
-      </header>
+      <Header />
 
       <main className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-1 space-y-8">
