@@ -19,7 +19,7 @@ const App = () => (
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename="/Scout-IA">
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
