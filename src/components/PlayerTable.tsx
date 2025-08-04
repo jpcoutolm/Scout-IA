@@ -96,35 +96,35 @@ export function PlayerTable({ players, deletePlayer }: PlayerTableProps) {
             <TableHeader>
               <TableRow>
                 {headers.map((header) => (
-                  <TableHead key={header.key}>
+                  <TableHead key={header.key} className="px-2 py-3 sm:px-4">
                     <Button variant="ghost" onClick={() => requestSort(header.key)}>
                       {header.label}
                       {getSortIndicator(header.key)}
                     </Button>
                   </TableHead>
                 ))}
-                <TableHead>Ações</TableHead>
+                <TableHead className="px-2 py-3 sm:px-4">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {sortedPlayers.length > 0 ? (
                 sortedPlayers.map((player) => (
                   <TableRow key={player.id}>
-                    <TableCell className="font-medium">{player.name}</TableCell>
-                    <TableCell>{player.position}</TableCell>
-                    <TableCell>{player.position !== 'Goleiro' ? player.goals : 'N/A'}</TableCell>
-                    <TableCell>{player.position !== 'Goleiro' ? player.accuratePasses : 'N/A'}</TableCell>
-                    <TableCell>{player.position !== 'Goleiro' ? player.missedPasses : 'N/A'}</TableCell>
-                    <TableCell>{player.position !== 'Goleiro' ? `${player.passingEfficiency}%` : 'N/A'}</TableCell>
-                    <TableCell>{player.position !== 'Goleiro' ? player.shotsOnTarget : 'N/A'}</TableCell>
-                    <TableCell>{player.fouls}</TableCell>
-                    <TableCell>{defensivePositions.includes(player.position) ? player.tackles ?? 0 : 'N/A'}</TableCell>
-                    <TableCell>{player.minutesPlayed}</TableCell>
-                    <TableCell>{player.position !== 'Goleiro' ? player.offensiveImpact : 'N/A'}</TableCell>
-                    <TableCell>{player.position === 'Goleiro' ? player.saves : 'N/A'}</TableCell>
-                    <TableCell>{player.position === 'Goleiro' ? player.goalsConceded : 'N/A'}</TableCell>
-                    <TableCell>{player.position === 'Goleiro' ? player.criticalErrors : 'N/A'}</TableCell>
-                    <TableCell>
+                    <TableCell className="font-medium px-2 py-3 sm:px-4">{player.name}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position !== 'Goleiro' ? player.goals : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position !== 'Goleiro' ? player.accuratePasses : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position !== 'Goleiro' ? player.missedPasses : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position !== 'Goleiro' ? `${player.passingEfficiency}%` : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position !== 'Goleiro' ? player.shotsOnTarget : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.fouls}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{defensivePositions.includes(player.position) ? player.tackles ?? 0 : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.minutesPlayed}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position !== 'Goleiro' ? player.offensiveImpact : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position === 'Goleiro' ? player.saves : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position === 'Goleiro' ? player.goalsConceded : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">{player.position === 'Goleiro' ? player.criticalErrors : 'N/A'}</TableCell>
+                    <TableCell className="px-2 py-3 sm:px-4">
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost" size="icon">

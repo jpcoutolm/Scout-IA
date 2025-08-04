@@ -151,7 +151,7 @@ const Index = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+    <div className="container mx-auto p-2 sm:p-4 md:p-6 lg:p-8">
       <Header />
 
       <main className="grid lg:grid-cols-3 gap-8">

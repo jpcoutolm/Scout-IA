@@ -20,7 +20,7 @@ export const Header = () => {
                 {/* Title and Subtitle */}
                 {/* On mobile, this appears below the controls */}
                 <div className="text-center sm:col-start-2 order-2 sm:order-none">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Scout IA – Análise de Partidas de Futebol Amador</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold break-words">Scout IA – Análise de Partidas de Futebol Amador</h1>
                     <p className="text-muted-foreground mt-2">Registre e analise o desempenho dos jogadores após cada partida.</p>
                 </div>
 
