@@ -2,6 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { LogOut, Play } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -22,8 +23,9 @@ export const Header = () => {
                     <p className="text-muted-foreground mt-2">Registre e analise o desempenho dos jogadores após cada partida.</p>
                 </div>
 
-                {/* Logout Button */}
-                <div className="flex justify-center sm:justify-end sm:col-start-3 order-2 sm:order-none">
+                {/* Right side controls */}
+                <div className="flex justify-center sm:justify-end items-center gap-2 sm:col-start-3 order-2 sm:order-none">
+                    <ThemeToggle />
                     <Button onClick={handleLogout} variant="outline" size="sm">
                         <LogOut className="h-4 w-4 sm:mr-2" />
                         <span className="hidden sm:inline">Sair</span>
