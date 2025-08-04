@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { PlayerDB } from '@/types/player';
 import { LiveStats } from '@/pages/LiveMatch';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,8 @@ export function LiveTracker({ roster, initialStats, onEndMatch }: LiveTrackerPro
   const [timer, setTimer] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
+  const activePlayer = useMemo(() => roster.find(p => p.id === activePlayerId), [activePlayerId, roster]);
+
   useEffect(() => {
     let interval: number | undefined;
     if (isTimerRunning) {
@@ -34,26 +36,53 @@ export function LiveTracker({ roster, initialStats, onEndMatch }: LiveTrackerPro
     return `${mins}:${secs}`;
   };
 
-  const handleEvent = useCallback((statKey: keyof Omit<LiveStats, 'minutesPlayed'>) => {
+  const handleEvent = useCallback((statKey: keyof LiveStats) => {
     if (!activePlayerId) return;
     setLiveStats(prevStats => {
       const newStats = new Map(prevStats);
       const playerStats = newStats.get(activePlayerId);
       if (playerStats) {
-        const updatedPlayerStats = { ...playerStats, [statKey]: playerStats[statKey] + 1 };
+        const currentVal = playerStats[statKey] ?? 0;
+        const updatedPlayerStats = { ...playerStats, [statKey]: currentVal + 1 };
         newStats.set(activePlayerId, updatedPlayerStats);
       }
       return newStats;
     });
   }, [activePlayerId]);
 
-  const eventButtons: { label: string; stat: keyof Omit<LiveStats, 'minutesPlayed'> }[] = [
-    { label: "+ Gol", stat: "goals" },
-    { label: "+ Chute a Gol", stat: "shotsOnTarget" },
-    { label: "+ Passe Certo", stat: "accuratePasses" },
-    { label: "+ Passe Errado", stat: "missedPasses" },
-    { label: "+ Falta", stat: "fouls" },
-  ];
+  const getEventButtons = () => {
+    if (!activePlayer) return [];
+
+    const { position } = activePlayer;
+    const defensivePositions = ['Zagueiro', 'Lateral', 'Volante'];
+
+    const baseOutfieldButtons: { label: string; stat: keyof LiveStats }[] = [
+      { label: "+ Gol", stat: "goals" },
+      { label: "+ Chute a Gol", stat: "shotsOnTarget" },
+      { label: "+ Passe Certo", stat: "accuratePasses" },
+      { label: "+ Passe Errado", stat: "missedPasses" },
+      { label: "+ Falta", stat: "fouls" },
+    ];
+
+    if (position === 'Goleiro') {
+      return [
+        { label: "+ Defesa", stat: "saves" },
+        { label: "+ Gol Sofrido", stat: "goalsConceded" },
+        { label: "+ Saída Bem-sucedida", stat: "successfulExits" },
+        { label: "+ Erro Crítico", stat: "criticalErrors" },
+        { label: "+ Falta", stat: "fouls" },
+      ];
+    }
+
+    if (defensivePositions.includes(position)) {
+      return [...baseOutfieldButtons, { label: "+ Desarme", stat: "tackles" }];
+    }
+
+    return baseOutfieldButtons;
+  };
+
+  const eventButtons = getEventButtons();
+  const defensivePositions = ['Zagueiro', 'Lateral', 'Volante'];
 
   return (
     <div className="space-y-8">
@@ -85,7 +114,7 @@ export function LiveTracker({ roster, initialStats, onEndMatch }: LiveTrackerPro
             </div>
           </div>
           <div className="md:col-span-2 space-y-4">
-            <h4 className="font-semibold">Registrar Evento</h4>
+            <h4 className="font-semibold">Registrar Evento para {activePlayer?.name || '...'}</h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {eventButtons.map(({ label, stat }) => (
                 <Button key={stat} onClick={() => handleEvent(stat)} disabled={!activePlayerId || !isTimerRunning}>
@@ -102,33 +131,39 @@ export function LiveTracker({ roster, initialStats, onEndMatch }: LiveTrackerPro
           <CardTitle>Estatísticas da Partida</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Jogador</TableHead>
-                <TableHead>Gols</TableHead>
-                <TableHead>Chutes</TableHead>
-                <TableHead>Passes C.</TableHead>
-                <TableHead>Passes E.</TableHead>
-                <TableHead>Faltas</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {roster.map(player => {
-                const stats = liveStats.get(player.id);
-                return (
-                  <TableRow key={player.id}>
-                    <TableCell>{player.name}</TableCell>
-                    <TableCell>{stats?.goals}</TableCell>
-                    <TableCell>{stats?.shotsOnTarget}</TableCell>
-                    <TableCell>{stats?.accuratePasses}</TableCell>
-                    <TableCell>{stats?.missedPasses}</TableCell>
-                    <TableCell>{stats?.fouls}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Jogador</TableHead>
+                  <TableHead>Gols</TableHead>
+                  <TableHead>Chutes</TableHead>
+                  <TableHead>Passes C/E</TableHead>
+                  <TableHead>Faltas</TableHead>
+                  <TableHead>Desarmes</TableHead>
+                  <TableHead>Defesas</TableHead>
+                  <TableHead>Gols Sofr.</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {roster.map(player => {
+                  const stats = liveStats.get(player.id);
+                  return (
+                    <TableRow key={player.id}>
+                      <TableCell>{player.name}</TableCell>
+                      <TableCell>{player.position !== 'Goleiro' ? stats?.goals ?? 0 : 'N/A'}</TableCell>
+                      <TableCell>{player.position !== 'Goleiro' ? stats?.shotsOnTarget ?? 0 : 'N/A'}</TableCell>
+                      <TableCell>{player.position !== 'Goleiro' ? `${stats?.accuratePasses ?? 0}/${stats?.missedPasses ?? 0}` : 'N/A'}</TableCell>
+                      <TableCell>{stats?.fouls ?? 0}</TableCell>
+                      <TableCell>{defensivePositions.includes(player.position) ? stats?.tackles ?? 0 : 'N/A'}</TableCell>
+                      <TableCell>{player.position === 'Goleiro' ? stats?.saves ?? 0 : 'N/A'}</TableCell>
+                      <TableCell>{player.position === 'Goleiro' ? stats?.goalsConceded ?? 0 : 'N/A'}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
       
