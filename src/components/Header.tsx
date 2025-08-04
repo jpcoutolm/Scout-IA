@@ -12,13 +12,12 @@ export const Header = () => {
     };
 
     return (
-        <header className="flex flex-col md:flex-row justify-between items-center mb-8 no-print">
-            <div className="hidden md:block flex-1"></div>
-            <div className="text-center">
+        <header className="text-center mb-8 relative no-print">
+            <div className="flex flex-col items-center">
                 <h1 className="text-3xl md:text-4xl font-bold">Scout IA – Análise de Partidas de Futebol Amador</h1>
                 <p className="text-muted-foreground mt-2">Registre e analise o desempenho dos jogadores após cada partida.</p>
             </div>
-            <div className="flex flex-1 items-center justify-center md:justify-end gap-2 mt-4 md:mt-0">
+            <div className="absolute top-0 right-0 flex items-center gap-2">
                  <Button onClick={() => navigate('/live')} variant="outline">
                     <Play className="mr-2 h-4 w-4" />
                     Partida Ao Vivo
