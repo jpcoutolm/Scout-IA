@@ -4,18 +4,32 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Printer } from 'lucide-react';
 
+interface ReportData {
+  players: CalculatedPlayerStats[];
+  header?: string;
+  logo?: string | null;
+}
+
 const Report = () => {
   const [players, setPlayers] = useState<CalculatedPlayerStats[]>([]);
+  const [header, setHeader] = useState('Scout IA – Relatório de Desempenho do Jogador');
+  const [logo, setLogo] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedPlayers = localStorage.getItem('playerReportData');
-    if (storedPlayers) {
-      setPlayers(JSON.parse(storedPlayers));
+    const storedData = localStorage.getItem('playerReportData');
+    if (storedData) {
+      const data: ReportData = JSON.parse(storedData);
+      setPlayers(data.players || []);
+      if (data.header) {
+        setHeader(data.header);
+      }
+      if (data.logo) {
+        setLogo(data.logo);
+      }
     }
   }, []);
 
   useEffect(() => {
-    // Automatically trigger print dialog once the component has mounted and rendered the players
     if (players.length > 0) {
       setTimeout(() => window.print(), 500);
     }
@@ -42,7 +56,8 @@ const Report = () => {
         </Button>
       </div>
       <div className="hidden print:block text-center mb-6">
-         <h1 className="text-2xl font-bold">Scout IA – Relatório de Desempenho do Jogador</h1>
+        {logo && <img src={logo} alt="Logo do Time" className="mx-auto h-24 w-auto object-contain mb-4" />}
+        <h1 className="text-2xl font-bold">{header}</h1>
       </div>
       <div className="overflow-x-auto">
         <Table>

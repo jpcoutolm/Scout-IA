@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { showError, showSuccess } from "@/utils/toast";
 import { Header } from "@/components/Header";
 import { PlayerRadarChart } from "@/components/PlayerRadarChart";
+import { ReportCustomization } from "@/components/ReportCustomization";
 
 const Index = () => {
   const { session } = useAuth();
@@ -28,6 +29,8 @@ const Index = () => {
     minMinutesPlayed: '',
     maxMinutesPlayed: '',
   });
+  const [customReportHeader, setCustomReportHeader] = useState('');
+  const [teamLogo, setTeamLogo] = useState<string | null>(null);
 
   const calculateStats = (player: PlayerDB): CalculatedPlayerStats => {
     const totalPasses = player.accuratePasses + player.missedPasses;
@@ -117,7 +120,12 @@ const Index = () => {
   };
 
   const handleDownloadPDF = () => {
-    localStorage.setItem('playerReportData', JSON.stringify(filteredPlayers));
+    const reportData = {
+      players: filteredPlayers,
+      header: customReportHeader,
+      logo: teamLogo,
+    };
+    localStorage.setItem('playerReportData', JSON.stringify(reportData));
     window.open('/report', '_blank');
   };
 
@@ -129,6 +137,7 @@ const Index = () => {
         <div className="lg:col-span-1 space-y-8">
           <PlayerForm addPlayer={addPlayer} />
           <PlayerFilters onFilterChange={setFilters} />
+          <ReportCustomization onHeaderChange={setCustomReportHeader} onLogoChange={setTeamLogo} />
         </div>
 
         <div className="lg:col-span-2 space-y-8">
