@@ -99,3 +99,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  .print\:block {
+    display: block !important;
+  }
+}

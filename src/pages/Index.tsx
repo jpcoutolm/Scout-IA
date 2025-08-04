@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Download, FileText } from "lucide-react";
 import { CalculatedPlayerStats, PlayerFormData } from "@/types/player";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 const Index = () => {
   const [players, setPlayers] = useState<CalculatedPlayerStats[]>([]);
@@ -45,23 +43,10 @@ const Index = () => {
   };
 
   const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-    doc.text("Scout IA – Player Performance Report", 14, 15);
-    
-    autoTable(doc, {
-      head: [['Name', 'Goals', 'Pass Eff. (%)', 'Off. Impact', 'Mins Played', 'Fouls']],
-      body: players.map(p => [
-        p.name,
-        p.goals,
-        `${p.passingEfficiency}%`,
-        p.offensiveImpact,
-        p.minutesPlayed,
-        p.fouls
-      ]),
-      startY: 20,
-    });
-
-    doc.save('player-performance-report.pdf');
+    // Save data to localStorage for the new tab to access
+    localStorage.setItem('playerReportData', JSON.stringify(players));
+    // Open the report page in a new tab
+    window.open('/report', '_blank');
   };
 
   return (
@@ -89,7 +74,7 @@ const Index = () => {
                 </Button>
                 <Button onClick={handleDownloadPDF} variant="outline" className="w-full sm:w-auto">
                   <FileText className="mr-2 h-4 w-4" />
-                  Download PDF Report
+                  Generate PDF Report
                 </Button>
               </CardContent>
             </Card>
