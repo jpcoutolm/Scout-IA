@@ -24,6 +24,11 @@ const formSchema = z.object({
   shotsOnTarget: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
   fouls: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
   minutesPlayed: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }).max(120, { message: "Não pode exceder 120 minutos." }),
+  // Goalkeeper fields
+  saves: z.coerce.number().int().min(0).optional(),
+  goalsConceded: z.coerce.number().int().min(0).optional(),
+  successfulExits: z.coerce.number().int().min(0).optional(),
+  criticalErrors: z.coerce.number().int().min(0).optional(),
 });
 
 interface PlayerFormProps {
@@ -42,8 +47,14 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
       shotsOnTarget: 0,
       fouls: 0,
       minutesPlayed: 0,
+      saves: 0,
+      goalsConceded: 0,
+      successfulExits: 0,
+      criticalErrors: 0,
     },
   });
+
+  const selectedPosition = form.watch("position");
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     addPlayer(values);
@@ -98,86 +109,33 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 )}
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="goals"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gols</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="shotsOnTarget"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Chutes a Gol</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="accuratePasses"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Passes Certos</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="missedPasses"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Passes Errados</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="fouls"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Faltas</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="minutesPlayed"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Minutos Jogados</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            
+            {selectedPosition !== 'Goleiro' && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField control={form.control} name="goals" render={({ field }) => (<FormItem><FormLabel>Gols</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="shotsOnTarget" render={({ field }) => (<FormItem><FormLabel>Chutes a Gol</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="accuratePasses" render={({ field }) => (<FormItem><FormLabel>Passes Certos</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="missedPasses" render={({ field }) => (<FormItem><FormLabel>Passes Errados</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="fouls" render={({ field }) => (<FormItem><FormLabel>Faltas</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                <FormField control={form.control} name="minutesPlayed" render={({ field }) => (<FormItem><FormLabel>Minutos Jogados</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+              </div>
+            )}
+
+            {selectedPosition === 'Goleiro' && (
+              <>
+                <div className="pt-4 mt-4 border-t">
+                  <h3 className="text-md font-semibold text-muted-foreground">Estatísticas de Goleiro</h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FormField control={form.control} name="saves" render={({ field }) => (<FormItem><FormLabel>Defesas</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="goalsConceded" render={({ field }) => (<FormItem><FormLabel>Gols Sofridos</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="successfulExits" render={({ field }) => (<FormItem><FormLabel>Saídas Bem-sucedidas</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="criticalErrors" render={({ field }) => (<FormItem><FormLabel>Erros Críticos (resultaram em gol)</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="minutesPlayed" render={({ field }) => (<FormItem><FormLabel>Minutos Jogados</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                </div>
+              </>
+            )}
+
             <Button type="submit" className="w-full">Adicionar Jogador</Button>
           </form>
         </Form>

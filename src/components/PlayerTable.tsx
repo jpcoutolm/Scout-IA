@@ -25,10 +25,12 @@ export function PlayerTable({ players }: PlayerTableProps) {
     let sortableItems = [...players];
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        const valA = a[sortConfig.key] ?? 0;
+        const valB = b[sortConfig.key] ?? 0;
+        if (valA < valB) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (valA > valB) {
           return sortConfig.direction === 'ascending' ? 1 : -1;
         }
         return 0;
@@ -52,18 +54,20 @@ export function PlayerTable({ players }: PlayerTableProps) {
     return sortConfig.direction === 'ascending' ? ' 🔼' : ' 🔽';
   };
 
-  const headers: { key: SortKey; label: string }[] = [
+  const headers: { key: SortKey; label: string; isGk?: boolean }[] = [
     { key: 'name', label: 'Nome' },
     { key: 'position', label: 'Posição' },
     { key: 'goals', label: 'Gols' },
     { key: 'accuratePasses', label: 'Passes Certos' },
     { key: 'missedPasses', label: 'Passes Errados' },
-    { key: 'totalPasses', label: 'Total de Passes' },
     { key: 'passingEfficiency', label: 'Efic. Passe (%)' },
     { key: 'shotsOnTarget', label: 'Chutes a Gol' },
     { key: 'fouls', label: 'Faltas' },
     { key: 'minutesPlayed', label: 'Min. Jogados' },
     { key: 'offensiveImpact', label: 'Impacto Of.' },
+    { key: 'saves', label: 'Defesas', isGk: true },
+    { key: 'goalsConceded', label: 'Gols Sofridos', isGk: true },
+    { key: 'criticalErrors', label: 'Erros Críticos', isGk: true },
   ];
 
   return (
@@ -92,15 +96,17 @@ export function PlayerTable({ players }: PlayerTableProps) {
                   <TableRow key={player.id}>
                     <TableCell className="font-medium">{player.name}</TableCell>
                     <TableCell>{player.position}</TableCell>
-                    <TableCell>{player.goals}</TableCell>
-                    <TableCell>{player.accuratePasses}</TableCell>
-                    <TableCell>{player.missedPasses}</TableCell>
-                    <TableCell>{player.totalPasses}</TableCell>
-                    <TableCell>{player.passingEfficiency}%</TableCell>
-                    <TableCell>{player.shotsOnTarget}</TableCell>
+                    <TableCell>{player.position !== 'Goleiro' ? player.goals : 'N/A'}</TableCell>
+                    <TableCell>{player.position !== 'Goleiro' ? player.accuratePasses : 'N/A'}</TableCell>
+                    <TableCell>{player.position !== 'Goleiro' ? player.missedPasses : 'N/A'}</TableCell>
+                    <TableCell>{player.position !== 'Goleiro' ? `${player.passingEfficiency}%` : 'N/A'}</TableCell>
+                    <TableCell>{player.position !== 'Goleiro' ? player.shotsOnTarget : 'N/A'}</TableCell>
                     <TableCell>{player.fouls}</TableCell>
                     <TableCell>{player.minutesPlayed}</TableCell>
-                    <TableCell>{player.offensiveImpact}</TableCell>
+                    <TableCell>{player.position !== 'Goleiro' ? player.offensiveImpact : 'N/A'}</TableCell>
+                    <TableCell>{player.position === 'Goleiro' ? player.saves : 'N/A'}</TableCell>
+                    <TableCell>{player.position === 'Goleiro' ? player.goalsConceded : 'N/A'}</TableCell>
+                    <TableCell>{player.position === 'Goleiro' ? player.criticalErrors : 'N/A'}</TableCell>
                   </TableRow>
                 ))
               ) : (

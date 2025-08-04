@@ -8,6 +8,11 @@ export interface PlayerFormData {
   fouls: number;
   minutesPlayed: number;
   position: string;
+  // Goalkeeper specific
+  saves?: number;
+  goalsConceded?: number;
+  successfulExits?: number;
+  criticalErrors?: number;
 }
 
 // Data structure in the database
