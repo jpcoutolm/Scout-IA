@@ -15,8 +15,8 @@ export const Header = () => {
         <header className="text-center mb-8 relative no-print py-4">
             <div className="absolute top-4 right-4">
                 <Button onClick={handleLogout} variant="outline" size="sm">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sair
+                    <LogOut className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Sair</span>
                 </Button>
             </div>
             <div className="flex flex-col items-center gap-4">
