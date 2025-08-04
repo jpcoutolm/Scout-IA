@@ -26,7 +26,12 @@ const Login = () => {
         </div>
         <Auth
           supabaseClient={supabase}
-          appearance={{ theme: ThemeSupa }}
+          appearance={{
+            theme: ThemeSupa,
+            className: {
+              input: 'dark:text-white',
+            },
+          }}
           providers={[]}
           localization={{
             variables: {
