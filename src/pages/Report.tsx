@@ -25,8 +25,8 @@ const Report = () => {
     return (
       <div className="min-h-screen flex items-center justify-center text-center p-4">
         <div>
-          <p className="mb-4">No player data found. Please generate a report from the main page first.</p>
-          <Button onClick={() => window.close()}>Close Tab</Button>
+          <p className="mb-4">Nenhum dado de jogador encontrado. Por favor, gere um relatório na página principal primeiro.</p>
+          <Button onClick={() => window.close()}>Fechar Aba</Button>
         </div>
       </div>
     );
@@ -35,24 +35,24 @@ const Report = () => {
   return (
     <div className="p-8">
       <div className="flex justify-between items-center mb-8 no-print">
-        <h1 className="text-2xl font-bold">Player Performance Report</h1>
+        <h1 className="text-2xl font-bold">Relatório de Desempenho do Jogador</h1>
         <Button onClick={() => window.print()}>
           <Printer className="mr-2 h-4 w-4" />
-          Print Report
+          Imprimir Relatório
         </Button>
       </div>
       <div className="hidden print:block text-center mb-6">
-         <h1 className="text-2xl font-bold">Scout IA – Player Performance Report</h1>
+         <h1 className="text-2xl font-bold">Scout IA – Relatório de Desempenho do Jogador</h1>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Goals</TableHead>
-            <TableHead>Pass Eff. (%)</TableHead>
-            <TableHead>Off. Impact</TableHead>
-            <TableHead>Mins Played</TableHead>
-            <TableHead>Fouls</TableHead>
+            <TableHead>Nome</TableHead>
+            <TableHead>Gols</TableHead>
+            <TableHead>Efic. Passe (%)</TableHead>
+            <TableHead>Impacto Of.</TableHead>
+            <TableHead>Min. Jogados</TableHead>
+            <TableHead>Faltas</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -69,7 +69,7 @@ const Report = () => {
         </TableBody>
       </Table>
       <p className="text-sm text-muted-foreground mt-8 no-print">
-        Use your browser's "Print" function and select "Save as PDF" to download the report. This dialog should have opened automatically.
+        Use a função "Imprimir" do seu navegador e selecione "Salvar como PDF" para baixar o relatório. Esta janela de diálogo deveria ter aberto automaticamente.
       </p>
     </div>
   );

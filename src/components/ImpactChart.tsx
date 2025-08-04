@@ -10,7 +10,7 @@ export function ImpactChart({ players }: ImpactChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Offensive Impact</CardTitle>
+        <CardTitle>Impacto Ofensivo</CardTitle>
       </CardHeader>
       <CardContent>
         {players.length > 0 ? (
@@ -21,12 +21,12 @@ export function ImpactChart({ players }: ImpactChartProps) {
               <YAxis allowDecimals={false} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="offensiveImpact" fill="hsl(var(--primary))" name="Offensive Impact" />
+              <Bar dataKey="offensiveImpact" fill="hsl(var(--primary))" name="Impacto Ofensivo" />
             </BarChart>
           </ResponsiveContainer>
         ) : (
           <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-            Add players to see the chart.
+            Adicione jogadores para ver o gráfico.
           </div>
         )}
       </CardContent>

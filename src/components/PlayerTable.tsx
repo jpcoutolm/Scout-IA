@@ -53,22 +53,22 @@ export function PlayerTable({ players }: PlayerTableProps) {
   };
 
   const headers: { key: SortKey; label: string }[] = [
-    { key: 'name', label: 'Name' },
-    { key: 'goals', label: 'Goals' },
-    { key: 'accuratePasses', label: 'Acc. Passes' },
-    { key: 'missedPasses', label: 'Missed Passes' },
-    { key: 'totalPasses', label: 'Total Passes' },
-    { key: 'passingEfficiency', label: 'Pass Eff. (%)' },
-    { key: 'shotsOnTarget', label: 'Shots on Target' },
-    { key: 'fouls', label: 'Fouls' },
-    { key: 'minutesPlayed', label: 'Mins Played' },
-    { key: 'offensiveImpact', label: 'Off. Impact' },
+    { key: 'name', label: 'Nome' },
+    { key: 'goals', label: 'Gols' },
+    { key: 'accuratePasses', label: 'Passes Certos' },
+    { key: 'missedPasses', label: 'Passes Errados' },
+    { key: 'totalPasses', label: 'Total de Passes' },
+    { key: 'passingEfficiency', label: 'Efic. Passe (%)' },
+    { key: 'shotsOnTarget', label: 'Chutes a Gol' },
+    { key: 'fouls', label: 'Faltas' },
+    { key: 'minutesPlayed', label: 'Min. Jogados' },
+    { key: 'offensiveImpact', label: 'Impacto Of.' },
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Player Statistics</CardTitle>
+        <CardTitle>Estatísticas dos Jogadores</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -104,7 +104,7 @@ export function PlayerTable({ players }: PlayerTableProps) {
               ) : (
                 <TableRow>
                   <TableCell colSpan={headers.length} className="h-24 text-center">
-                    No players added yet.
+                    Nenhum jogador adicionado ainda.
                   </TableCell>
                 </TableRow>
               )}

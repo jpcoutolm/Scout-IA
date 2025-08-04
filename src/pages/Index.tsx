@@ -27,7 +27,7 @@ const Index = () => {
   };
 
   const handleDownloadCSV = () => {
-    const headers = "Name,Goals,Accurate Passes,Missed Passes,Total Passes,Passing Efficiency (%),Shots on Target,Fouls,Minutes Played,Offensive Impact";
+    const headers = "Nome,Gols,Passes Certos,Passes Errados,Total de Passes,Eficiência de Passe (%),Chutes a Gol,Faltas,Minutos Jogados,Impacto Ofensivo";
     const rows = players.map(p =>
       [p.name, p.goals, p.accuratePasses, p.missedPasses, p.totalPasses, p.passingEfficiency, p.shotsOnTarget, p.fouls, p.minutesPlayed, p.offensiveImpact].join(',')
     ).join('\n');
@@ -36,7 +36,7 @@ const Index = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "player_stats.csv");
+    link.setAttribute("download", "estatisticas_jogadores.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -52,8 +52,8 @@ const Index = () => {
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <header className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold">Scout IA – Amateur Football Match Analysis</h1>
-        <p className="text-muted-foreground mt-2">Register and analyze player performance after each match.</p>
+        <h1 className="text-3xl md:text-4xl font-bold">Scout IA – Análise de Partidas de Futebol Amador</h1>
+        <p className="text-muted-foreground mt-2">Registre e analise o desempenho dos jogadores após cada partida.</p>
       </header>
 
       <main className="grid lg:grid-cols-3 gap-8">
@@ -70,11 +70,11 @@ const Index = () => {
               <CardContent className="flex flex-col sm:flex-row gap-4">
                 <Button onClick={handleDownloadCSV} className="w-full sm:w-auto">
                   <Download className="mr-2 h-4 w-4" />
-                  Download CSV
+                  Baixar CSV
                 </Button>
                 <Button onClick={handleDownloadPDF} variant="outline" className="w-full sm:w-auto">
                   <FileText className="mr-2 h-4 w-4" />
-                  Generate PDF Report
+                  Gerar Relatório PDF
                 </Button>
               </CardContent>
             </Card>

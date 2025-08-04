@@ -15,13 +15,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlayerFormData } from "@/types/player";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  goals: z.coerce.number().int().min(0, { message: "Must be 0 or more." }),
-  accuratePasses: z.coerce.number().int().min(0, { message: "Must be 0 or more." }),
-  missedPasses: z.coerce.number().int().min(0, { message: "Must be 0 or more." }),
-  shotsOnTarget: z.coerce.number().int().min(0, { message: "Must be 0 or more." }),
-  fouls: z.coerce.number().int().min(0, { message: "Must be 0 or more." }),
-  minutesPlayed: z.coerce.number().int().min(0, { message: "Must be 0 or more." }).max(120, { message: "Cannot exceed 120 minutes." }),
+  name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
+  goals: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
+  accuratePasses: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
+  missedPasses: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
+  shotsOnTarget: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
+  fouls: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }),
+  minutesPlayed: z.coerce.number().int().min(0, { message: "Deve ser 0 ou mais." }).max(120, { message: "Não pode exceder 120 minutos." }),
 });
 
 interface PlayerFormProps {
@@ -50,7 +50,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Register Player Performance</CardTitle>
+        <CardTitle>Registrar Desempenho do Jogador</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -60,9 +60,9 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Player Name</FormLabel>
+                  <FormLabel>Nome do Jogador</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Lionel Messi" {...field} />
+                    <Input placeholder="ex: Lionel Messi" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,7 +74,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 name="goals"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Goals</FormLabel>
+                    <FormLabel>Gols</FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
                     </FormControl>
@@ -87,7 +87,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 name="shotsOnTarget"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Shots on Target</FormLabel>
+                    <FormLabel>Chutes a Gol</FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
                     </FormControl>
@@ -100,7 +100,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 name="accuratePasses"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Accurate Passes</FormLabel>
+                    <FormLabel>Passes Certos</FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
                     </FormControl>
@@ -113,7 +113,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 name="missedPasses"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Missed Passes</FormLabel>
+                    <FormLabel>Passes Errados</FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
                     </FormControl>
@@ -126,7 +126,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 name="fouls"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Fouls</FormLabel>
+                    <FormLabel>Faltas</FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
                     </FormControl>
@@ -139,7 +139,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 name="minutesPlayed"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Minutes Played</FormLabel>
+                    <FormLabel>Minutos Jogados</FormLabel>
                     <FormControl>
                       <Input type="number" {...field} />
                     </FormControl>
@@ -148,7 +148,7 @@ export function PlayerForm({ addPlayer }: PlayerFormProps) {
                 )}
               />
             </div>
-            <Button type="submit" className="w-full">Add Player</Button>
+            <Button type="submit" className="w-full">Adicionar Jogador</Button>
           </form>
         </Form>
       </CardContent>
