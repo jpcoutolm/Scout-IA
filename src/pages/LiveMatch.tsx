@@ -1,16 +1,19 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PlayerDB, PlayerFormData } from '@/types/player';
 import { MatchSetup } from '@/components/live/MatchSetup';
 import { LiveTracker } from '@/components/live/LiveTracker';
-import { Header } from '@/components/Header';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/components/AuthProvider';
 import { showError, showSuccess, showLoading, dismissToast } from '@/utils/toast';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 export type LiveStats = Omit<PlayerFormData, 'name' | 'position'>;
 
 const LiveMatch = () => {
   const { session } = useAuth();
+  const navigate = useNavigate();
   const [matchPhase, setMatchPhase] = useState<'setup' | 'live'>('setup');
   const [roster, setRoster] = useState<PlayerDB[]>([]);
   const [liveStats, setLiveStats] = useState<Map<string, LiveStats>>(new Map());
@@ -83,7 +86,15 @@ const LiveMatch = () => {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <Header />
+      <div className="relative flex justify-center items-center mb-8">
+        <div className="absolute left-0">
+            <Button onClick={() => navigate('/')} variant="outline">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Voltar
+            </Button>
+        </div>
+        <h1 className="text-3xl font-bold text-center">Partida Ao Vivo</h1>
+      </div>
       <main>
         {matchPhase === 'setup' ? (
           <MatchSetup onStartMatch={handleStartMatch} />
