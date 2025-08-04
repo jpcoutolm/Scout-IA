@@ -93,7 +93,7 @@ const LiveMatch = () => {
                 Voltar
             </Button>
         </div>
-        <h1 className="text-3xl font-bold text-center">Partida Ao Vivo</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-center px-4">Partida Ao Vivo</h1>
       </div>
       <main>
         {matchPhase === 'setup' ? (

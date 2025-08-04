@@ -18,8 +18,8 @@ const Login = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted">
-      <div className="w-full max-w-md p-8 space-y-8 bg-card text-card-foreground rounded-lg shadow-md">
+    <div className="min-h-screen flex items-center justify-center bg-muted p-4">
+      <div className="w-full max-w-md p-6 sm:p-8 space-y-8 bg-card text-card-foreground rounded-lg shadow-md">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Scout IA</h1>
           <p className="text-muted-foreground">Faça login para continuar</p>
