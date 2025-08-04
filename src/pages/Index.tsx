@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { PlayerForm } from "@/components/PlayerForm";
 import { PlayerTable } from "@/components/PlayerTable";
 import { ImpactChart } from "@/components/ImpactChart";
@@ -6,9 +6,21 @@ import { Button } from "@/components/ui/button";
 import { Download, FileText } from "lucide-react";
 import { CalculatedPlayerStats, PlayerFormData } from "@/types/player";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PlayerFilters, Filters } from "@/components/PlayerFilters";
 
 const Index = () => {
   const [players, setPlayers] = useState<CalculatedPlayerStats[]>([]);
+  const [filters, setFilters] = useState<Filters>({
+    name: '',
+    minGoals: '',
+    maxGoals: '',
+    minPassingEfficiency: '',
+    maxPassingEfficiency: '',
+    minFouls: '',
+    maxFouls: '',
+    minMinutesPlayed: '',
+    maxMinutesPlayed: '',
+  });
 
   const addPlayer = (data: PlayerFormData) => {
     const totalPasses = data.accuratePasses + data.missedPasses;
@@ -26,9 +38,27 @@ const Index = () => {
     setPlayers((prev) => [...prev, newPlayer]);
   };
 
+  const filteredPlayers = useMemo(() => {
+    return players.filter(player => {
+      const { name, minGoals, maxGoals, minPassingEfficiency, maxPassingEfficiency, minFouls, maxFouls, minMinutesPlayed, maxMinutesPlayed } = filters;
+
+      if (name && !player.name.toLowerCase().includes(name.toLowerCase())) return false;
+      if (minGoals !== '' && player.goals < Number(minGoals)) return false;
+      if (maxGoals !== '' && player.goals > Number(maxGoals)) return false;
+      if (minPassingEfficiency !== '' && player.passingEfficiency < Number(minPassingEfficiency)) return false;
+      if (maxPassingEfficiency !== '' && player.passingEfficiency > Number(maxPassingEfficiency)) return false;
+      if (minFouls !== '' && player.fouls < Number(minFouls)) return false;
+      if (maxFouls !== '' && player.fouls > Number(maxFouls)) return false;
+      if (minMinutesPlayed !== '' && player.minutesPlayed < Number(minMinutesPlayed)) return false;
+      if (maxMinutesPlayed !== '' && player.minutesPlayed > Number(maxMinutesPlayed)) return false;
+      
+      return true;
+    });
+  }, [players, filters]);
+
   const handleDownloadCSV = () => {
     const headers = "Nome,Gols,Passes Certos,Passes Errados,Total de Passes,Eficiência de Passe (%),Chutes a Gol,Faltas,Minutos Jogados,Impacto Ofensivo";
-    const rows = players.map(p =>
+    const rows = filteredPlayers.map(p =>
       [p.name, p.goals, p.accuratePasses, p.missedPasses, p.totalPasses, p.passingEfficiency, p.shotsOnTarget, p.fouls, p.minutesPlayed, p.offensiveImpact].join(',')
     ).join('\n');
 
@@ -43,9 +73,7 @@ const Index = () => {
   };
 
   const handleDownloadPDF = () => {
-    // Save data to localStorage for the new tab to access
-    localStorage.setItem('playerReportData', JSON.stringify(players));
-    // Open the report page in a new tab
+    localStorage.setItem('playerReportData', JSON.stringify(filteredPlayers));
     window.open('/report', '_blank');
   };
 
@@ -57,8 +85,9 @@ const Index = () => {
       </header>
 
       <main className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 space-y-8">
           <PlayerForm addPlayer={addPlayer} />
+          <PlayerFilters onFilterChange={setFilters} />
         </div>
 
         <div className="lg:col-span-2 space-y-8">
@@ -68,19 +97,19 @@ const Index = () => {
                 <CardTitle>Downloads</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col sm:flex-row gap-4">
-                <Button onClick={handleDownloadCSV} className="w-full sm:w-auto">
+                <Button onClick={handleDownloadCSV} className="w-full sm:w-auto" disabled={filteredPlayers.length === 0}>
                   <Download className="mr-2 h-4 w-4" />
                   Baixar CSV
                 </Button>
-                <Button onClick={handleDownloadPDF} variant="outline" className="w-full sm:w-auto">
+                <Button onClick={handleDownloadPDF} variant="outline" className="w-full sm:w-auto" disabled={filteredPlayers.length === 0}>
                   <FileText className="mr-2 h-4 w-4" />
                   Gerar Relatório PDF
                 </Button>
               </CardContent>
             </Card>
           )}
-          <PlayerTable players={players} />
-          <ImpactChart players={players} />
+          <PlayerTable players={filteredPlayers} />
+          <ImpactChart players={filteredPlayers} />
         </div>
       </main>
     </div>
