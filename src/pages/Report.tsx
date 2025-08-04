@@ -44,30 +44,32 @@ const Report = () => {
       <div className="hidden print:block text-center mb-6">
          <h1 className="text-2xl font-bold">Scout IA – Relatório de Desempenho do Jogador</h1>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nome</TableHead>
-            <TableHead>Gols</TableHead>
-            <TableHead>Efic. Passe (%)</TableHead>
-            <TableHead>Impacto Of.</TableHead>
-            <TableHead>Min. Jogados</TableHead>
-            <TableHead>Faltas</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {players.map((p) => (
-            <TableRow key={p.id}>
-              <TableCell>{p.name}</TableCell>
-              <TableCell>{p.goals}</TableCell>
-              <TableCell>{p.passingEfficiency}%</TableCell>
-              <TableCell>{p.offensiveImpact}</TableCell>
-              <TableCell>{p.minutesPlayed}</TableCell>
-              <TableCell>{p.fouls}</TableCell>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nome</TableHead>
+              <TableHead>Gols</TableHead>
+              <TableHead>Efic. Passe (%)</TableHead>
+              <TableHead>Impacto Of.</TableHead>
+              <TableHead>Min. Jogados</TableHead>
+              <TableHead>Faltas</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {players.map((p) => (
+              <TableRow key={p.id}>
+                <TableCell>{p.name}</TableCell>
+                <TableCell>{p.goals}</TableCell>
+                <TableCell>{p.passingEfficiency}%</TableCell>
+                <TableCell>{p.offensiveImpact}</TableCell>
+                <TableCell>{p.minutesPlayed}</TableCell>
+                <TableCell>{p.fouls}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       <p className="text-sm text-muted-foreground mt-8 no-print">
         Use a função "Imprimir" do seu navegador e selecione "Salvar como PDF" para baixar o relatório. Esta janela de diálogo deveria ter aberto automaticamente.
       </p>
