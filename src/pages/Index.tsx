@@ -86,6 +86,26 @@ const Index = () => {
     }
   };
 
+  const deletePlayer = async (playerId: string) => {
+    if (!session?.user) {
+      showError("Você precisa estar logado para remover um jogador.");
+      return;
+    }
+
+    const { error } = await supabase
+      .from('players')
+      .delete()
+      .eq('id', playerId);
+
+    if (error) {
+      console.error('Error deleting player:', error);
+      showError('Falha ao remover jogador.');
+    } else {
+      setPlayers((prev) => prev.filter((p) => p.id !== playerId));
+      showSuccess("Jogador removido com sucesso!");
+    }
+  };
+
   const filteredPlayers = useMemo(() => {
     return players.filter(player => {
       const { name, minGoals, maxGoals, minPassingEfficiency, maxPassingEfficiency, minFouls, maxFouls, minMinutesPlayed, maxMinutesPlayed } = filters;
@@ -161,7 +181,7 @@ const Index = () => {
           )}
           <AISuggestions players={filteredPlayers} />
           <PlayerRadarChart players={filteredPlayers} />
-          <PlayerTable players={filteredPlayers} />
+          <PlayerTable players={filteredPlayers} deletePlayer={deletePlayer} />
           <ImpactChart players={filteredPlayers} />
         </div>
       </main>

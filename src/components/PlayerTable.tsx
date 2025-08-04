@@ -9,16 +9,28 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Trash2 } from "lucide-react";
 import { CalculatedPlayerStats } from "@/types/player";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface PlayerTableProps {
   players: CalculatedPlayerStats[];
+  deletePlayer: (id: string) => void;
 }
 
 type SortKey = keyof CalculatedPlayerStats;
 
-export function PlayerTable({ players }: PlayerTableProps) {
+export function PlayerTable({ players, deletePlayer }: PlayerTableProps) {
   const [sortConfig, setSortConfig] = React.useState<{ key: SortKey; direction: 'ascending' | 'descending' } | null>({ key: 'offensiveImpact', direction: 'descending' });
 
   const sortedPlayers = React.useMemo(() => {
@@ -91,6 +103,7 @@ export function PlayerTable({ players }: PlayerTableProps) {
                     </Button>
                   </TableHead>
                 ))}
+                <TableHead>Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -111,11 +124,37 @@ export function PlayerTable({ players }: PlayerTableProps) {
                     <TableCell>{player.position === 'Goleiro' ? player.saves : 'N/A'}</TableCell>
                     <TableCell>{player.position === 'Goleiro' ? player.goalsConceded : 'N/A'}</TableCell>
                     <TableCell>{player.position === 'Goleiro' ? player.criticalErrors : 'N/A'}</TableCell>
+                    <TableCell>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Esta ação não pode ser desfeita. Isso irá remover permanentemente os dados do jogador {player.name}.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => deletePlayer(player.id)}
+                              className="bg-destructive hover:bg-destructive/90"
+                            >
+                              Remover
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={headers.length} className="h-24 text-center">
+                  <TableCell colSpan={headers.length + 1} className="h-24 text-center">
                     Nenhum jogador adicionado ainda.
                   </TableCell>
                 </TableRow>
