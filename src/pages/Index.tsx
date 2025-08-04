@@ -7,6 +7,7 @@ import { Download, FileText } from "lucide-react";
 import { CalculatedPlayerStats, PlayerFormData } from "@/types/player";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlayerFilters, Filters } from "@/components/PlayerFilters";
+import { AISuggestions } from "@/components/AISuggestions";
 
 const Index = () => {
   const [players, setPlayers] = useState<CalculatedPlayerStats[]>([]);
@@ -108,6 +109,7 @@ const Index = () => {
               </CardContent>
             </Card>
           )}
+          <AISuggestions players={filteredPlayers} />
           <PlayerTable players={filteredPlayers} />
           <ImpactChart players={filteredPlayers} />
         </div>
