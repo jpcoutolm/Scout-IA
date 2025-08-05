@@ -13,15 +13,19 @@ export const Header = () => {
     };
 
     return (
-        <header className="mb-8 no-print py-4">
+        <header className="mb-8 no-print py-4 px-4 sm:px-8">
             {/* Top row for title and logout, using CSS Grid for robust alignment */}
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-4 items-center">
                 
                 {/* Title and Subtitle */}
                 {/* On mobile, this appears below the controls */}
                 <div className="text-center sm:col-start-2 order-2 sm:order-none">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold break-words">Scout IA – Análise de Partidas de Futebol Amador</h1>
-                    <p className="text-muted-foreground mt-2">Registre e analise o desempenho dos jogadores após cada partida.</p>
+                    <h1 className="text-xl sm:text-2xl md:text-4xl font-bold break-words leading-snug sm:leading-normal">
+                    Scout IA – Análise de Partidas de Futebol Amador
+                    </h1>
+                    <p className="text-sm sm:text-base text-muted-foreground mt-2">
+                    Registre e analise o desempenho dos jogadores após cada partida.
+                    </p>
                 </div>
 
                 {/* Right side controls */}
@@ -38,11 +42,15 @@ export const Header = () => {
 
             {/* Live Match Button */}
             <div className="mt-4 flex justify-center">
-                <Button onClick={() => navigate('/live')} size="lg">
-                    <Play className="mr-2 h-4 w-4" />
-                    Partida Ao Vivo
-                </Button>
-            </div>
+             <Button onClick={() => navigate('/live')}
+                size="lg"
+                className="w-full sm:w-auto px-6"
+                >
+             <Play className="mr-2 h-4 w-4" />
+                 Partida Ao Vivo
+            </Button>
+</div>
+
         </header>
     );
 }

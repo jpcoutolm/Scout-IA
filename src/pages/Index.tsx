@@ -154,8 +154,8 @@ const Index = () => {
     <div className="container mx-auto p-2 sm:p-4 md:p-6 lg:p-8">
       <Header />
 
-      <main className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1 space-y-8">
+      <main className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <div className="lg:col-span-1 space-y-8 w-full">
           <PlayerForm addPlayer={addPlayer} />
           <PlayerFilters onFilterChange={setFilters} />
           <ReportCustomization onHeaderChange={setCustomReportHeader} onLogoChange={setTeamLogo} />
@@ -167,7 +167,7 @@ const Index = () => {
               <CardHeader>
                 <CardTitle>Downloads</CardTitle>
               </CardHeader>
-              <CardContent className="flex flex-col sm:flex-row gap-4">
+              <CardContent className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <Button onClick={handleDownloadCSV} className="w-full sm:w-auto" disabled={filteredPlayers.length === 0}>
                   <Download className="mr-2 h-4 w-4" />
                   Baixar CSV
