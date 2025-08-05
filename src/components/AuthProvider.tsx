@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!loading) {
-      const isAuthPage = location.pathname === '/login';
+      const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
       if (!session && !isAuthPage) {
         navigate('/login');
       } else if (session && isAuthPage) {

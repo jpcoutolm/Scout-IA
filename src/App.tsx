@@ -10,6 +10,10 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./components/AuthProvider";
 import LiveMatch from "./pages/LiveMatch";
 import { ThemeProvider } from "./components/ThemeProvider";
+import SignUp from './pages/SignUp';
+
+
+
 
 const queryClient = new QueryClient();
 
@@ -22,13 +26,37 @@ const App = () => (
         <BrowserRouter basename="/Scout-IA">
           <AuthProvider>
             <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Index />} />
-              <Route path="/report" element={<Report />} />
-              <Route path="/live" element={<LiveMatch />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+  <Route path="/login" element={<Login />} />
+  <Route path="/signup" element={<SignUp />} />
+
+
+  <Route
+    path="/"
+    element={
+      <AuthProvider>
+        <Index />
+      </AuthProvider>
+    }
+  />
+  <Route
+    path="/report"
+    element={
+      <AuthProvider>
+        <Report />
+      </AuthProvider>
+    }
+  />
+  <Route
+    path="/live"
+    element={
+      <AuthProvider>
+        <LiveMatch />
+      </AuthProvider>
+    }
+  />
+
+  <Route path="*" element={<NotFound />} />
+</Routes>
           </AuthProvider>
         </BrowserRouter>
       </ThemeProvider>

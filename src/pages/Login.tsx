@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -124,16 +125,9 @@ const Login = () => {
           </button>
           <div className="text-muted-foreground">
             Não tem uma conta?{' '}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                alert('Fluxo de cadastro pode ser implementado aqui (signUp).');
-              }}
-              className="underline"
-            >
-              Cadastre‑se
-            </a>
+            <Link to="/signup" className="underline">
+            Cadastre‑se
+            </Link>
           </div>
         </div>
 
